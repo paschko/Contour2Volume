@@ -16,3 +16,8 @@ By clicking **Rotate Volume** you can switch between planes. Use the slider or s
 Add a contour for a slice by clicking **Draw Sample**. When having added >3 contour samples, you can preview the volume by clicking the corresponding button.
 
 **Export to Workspace** will assign a multitude of variables regarding your current sample and volume to your MATLAB workspace.
+
+## Known Issues
+Everytime a new contour has been added the MATLAB main window pops into focus. To avoid this, just minimize the MATLAB main window.
+
+Aspect ratios in the volume are not correct.
