@@ -3,6 +3,7 @@ A MATLAB app to manually select contours (i.e. ROIs) in slices of Thorlabs OCT d
 
 
 ## Requirements
+Required libraries and files are included in the release but need to be added when using the source code.
 - [Multi ROI/Mask Editor Class](https://de.mathworks.com/matlabcentral/fileexchange/31388-multi-roi-mask-editor-class) in your MATLAB path.
 - Has been tested solely on MATLAB R2017b
 
