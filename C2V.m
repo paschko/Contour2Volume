@@ -35,7 +35,7 @@ classdef C2V < handle
             if isempty(ax) || ~isvalid(ax)
                 ax = axes;
                 setView = 3;
-                setAspect = [meta.spacingZ meta.spacingX meta.spacingY];
+                setAspect = [meta.spacingY/meta.spacingX meta.spacingZ/meta.spacingZ meta.spacingY/meta.spacingZ]; % still not sure if this is absolutely right...
                 
             else
                 setView = ax.View;
@@ -74,6 +74,11 @@ classdef C2V < handle
             ax.XTickLabel = cellfun(@num2str, num2cell(str2double(ax.XTickLabel) - ax.XLim(1)), 'UniformOutput', false);
             ax.YTickLabel = cellfun(@num2str, num2cell(str2double(ax.YTickLabel) - ax.YLim(1)), 'UniformOutput', false);
             ax.ZTickLabel = cellfun(@num2str, num2cell(str2double(ax.ZTickLabel) - ax.ZLim(1)), 'UniformOutput', false);
+            % handling a numerical problem: workaround is just manually
+            % inserting 0 as start
+            ax.XTickLabel{1} = '0';
+            ax.YTickLabel{1} = '0';
+            ax.ZTickLabel{1} = '0';
             
             % convert to mm
             %ax.XTickLabel = num2str(str2double(ax.XTickLabel)*meta.spacingX);
@@ -85,6 +90,7 @@ classdef C2V < handle
         end
         
         function addVolumeAnnotation(volume, voxelVolume)
+           
             dim = [0.2 0.5 0.3 0.3];
             str = {'Volume:', [num2str(nnz(volume) * voxelVolume) ' mm^3']};
             annotation('textbox',dim,'String',str,'FitBoxToText','on');
