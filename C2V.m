@@ -48,6 +48,7 @@ classdef C2V < handle
                 volume = smooth3(volume);
             end
             isovalue = 10;
+            volume = padarray(volume, [100, 100, 100]);
             p = patch(ax, isosurface(volume));
             isonormals(volume, p);
             view(3);
@@ -124,14 +125,22 @@ classdef C2V < handle
             missingEndIdx = missingEndIdx(2:end);
             
             exVol = zeros(size(volume,1), size(volume,2), max(sliceIdx));
+            
+            % add beginning of the volume from consecutive slices if
+            % available
             if min(missingStartIdx)-1 < min(sliceIdx)-1
                 startLength = (min(missingStartIdx)-1) - min(sliceIdx);
                 exVol(:,:,min(sliceIdx):(min(missingStartIdx)-1)) = volume(:,:,1:startLength);
             end
+            
+            % insert missing slices
             for i = 1:length(missingStartIdx)
                 newLength = ((missingEndIdx(i)+1) - (missingStartIdx(i)-1));
                 exVol(:,:,missingStartIdx(i)-1:missingEndIdx(i)+1) = imresize3(volume(:,:,i:i+1),[size(volume,1), size(volume,2), newLength+1]);
             end
+            
+            % add end of the volume from consecutive slices if
+            % available
             if missingEndIdx(end)+1 <= size(exVol,3)
                 exVol(:,:,missingEndIdx(end)+1:end) = volume(:,:, (end-(max(sliceIdx)-max(missingEndIdx))+1):end);
             end
